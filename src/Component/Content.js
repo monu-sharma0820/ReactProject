@@ -15,7 +15,7 @@ function Content() {
     const x3 = text3.current.value;
 
     var errMsg = '';
-    if (x1 == '' || x2 == '' || x3 == '') {
+    if (x1 === '' || x2 === '' || x3 === '') {
       errMsg = 'All values R required';
       para.current.className = 'alert alert-danger';
     } else if (isNaN(x1)) {
