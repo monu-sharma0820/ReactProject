@@ -43,16 +43,17 @@ function Game() {
       dice2Ref.current.src = diceImages[roll2];
 
       if (guess === 7 && sum === 7) {
-        errMsg = '🎯 Exact Match: Both are 7';
+        errMsg = ' Exact Match: Both are 7';
         para.current.className = 'alert alert-success';
-      } else if (guess < 7 && sum < 7) {
-        errMsg = '❌ Failed: Both are below 7';
+      } else if (guess < 7 && sum > 7  || guess > 7 && sum < 7) {
+        errMsg = 'Failed:';
         para.current.className = 'alert alert-danger';
-      } else if (guess > 7 && sum > 7) {
-        errMsg = '✅ Passed: Both are above 7';
+      } else if (guess < 7 && sum < 7 || guess > 7 && sum > 7) {
+        errMsg = ' Passed:';
         para.current.className = 'alert alert-success';
-      } else {
-        errMsg = `❌ Failed: Your guess was ${guess}, but dice sum is ${sum}`;
+      } 
+      else {
+        errMsg = ` Failed: Your guess was ${guess}, but dice sum is ${sum}`;
         para.current.className = 'alert alert-danger';
       }
     }
@@ -77,10 +78,7 @@ function Game() {
           </div>
 
           <div className="col-12 text-center">
-            <button
-              className="btn btn-primary mt-3"
-              onClick={myfunc}
-            >
+            <button className="btn btn-primary mt-3" onClick={myfunc}>
               Check
             </button>
           </div>

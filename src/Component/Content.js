@@ -8,6 +8,9 @@ function Content() {
   const radioCredit = useRef();
   const radioDebit = useRef();
 
+  console.log(localStorage.getItem('product'));
+  console.log(JSON.parse(localStorage.getItem('product')));
+
   let setdata = JSON.parse(localStorage.getItem('product')) || [];
 
   function myfunc() {
@@ -75,11 +78,7 @@ function Content() {
 
               <div className="col-md-6">
                 <label className="form-label">Date of Birth</label>
-                <input
-                  type="date"
-                  ref={text2}
-                  className="form-control"
-                />
+                <input type="date" ref={text2} className="form-control" />
               </div>
 
               <div className="col-md-12">
@@ -145,21 +144,46 @@ function Content() {
         <table className="table table-bordered table-hover">
           <thead className="table-dark text-center">
             <tr>
+              <th>Id</th>
               <th>Amount</th>
               <th>Date of Birth</th>
               <th>Details</th>
               <th>Credit/Debit</th>
+              <th>Total Amount</th>
             </tr>
           </thead>
           <tbody className="text-center">
-            {storedata.map((item) => (
-              <tr key={item.id}>
-                <td>{item.amount}</td>
-                <td>{item['date-of-birth']}</td>
-                <td>{item.salary}</td>
-                <td>{item.paymentMode}</td>
-              </tr>
-            ))}
+            {(() => {
+              let runningTotal = 0;
+              return storedata.map((item) => {
+                const amount = Math.abs(parseFloat(item.amount));
+
+                if (item.paymentMode === 'Credit') {
+                  runningTotal += amount;
+                } else if (item.paymentMode === 'Debit') {
+                  runningTotal -= amount;
+                }
+
+                return (
+                  <tr key={item.id}>
+                    <td>{item.id}</td>
+                    <td>{item.amount}</td>
+                    <td>{item['date-of-birth']}</td>
+                    <td>{item.salary}</td>
+                    <td
+                      className={
+                        item.paymentMode === 'Credit'
+                          ? 'text-success'
+                          : 'text-danger'
+                      }
+                    >
+                      {item.paymentMode}
+                    </td>
+                    <td>{runningTotal.toFixed(2)}</td>
+                  </tr>
+                );
+              });
+            })()}
           </tbody>
         </table>
       </div>
